@@ -47,6 +47,11 @@ export const initDatabase = async () => {
       VALUES ('2', 'manager', 'manager2024', true)
     `);
 
+    await client.execute(`
+      INSERT OR IGNORE INTO admins (id, username, codephrase, is_active)
+      VALUES ('3', 'euskadi', 'Bilbok0-Ath1etic-Klu8a', true)
+    `);
+
     console.log('Database initialized successfully');
   } catch (error) {
     console.error('Database initialization error:', error);
