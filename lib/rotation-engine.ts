@@ -259,13 +259,29 @@ export async function generateRotatedLinks(config: LinkRotationConfig): Promise<
       const shortUrlResponse = await shortenUrl(affiliateLink);
       
       if (shortUrlResponse.status === 'success' && shortUrlResponse.shorturl) {
-        shortenedLinks.push({
+        const linkData = {
           originalUrl: affiliateLink,
           shortUrl: shortUrlResponse.shorturl,
           marker: marker,
           subid: config.subid,
           createdAt: new Date().toISOString(),
-        });
+        };
+        
+        shortenedLinks.push(linkData);
+        
+        // Add to analytics database
+        try {
+          const { addLinkToAnalytics } = await import('./analytics-service');
+          await addLinkToAnalytics({
+            shortUrl: shortUrlResponse.shorturl,
+            originalUrl: affiliateLink,
+            title: shortUrlResponse.title || '',
+            marker: marker,
+            subid: config.subid
+          });
+        } catch (error) {
+          console.error('Failed to add link to analytics:', error);
+        }
       } else {
         throw new Error(`Failed to shorten link: ${shortUrlResponse.message}`);
       }

@@ -36,6 +36,34 @@ export const initDatabase = async () => {
       )
     `);
 
+    // Create link_analytics table for storing link performance data
+    await client.execute(`
+      CREATE TABLE IF NOT EXISTS link_analytics (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        short_url TEXT UNIQUE NOT NULL,
+        original_url TEXT NOT NULL,
+        title TEXT,
+        marker TEXT NOT NULL,
+        subid TEXT,
+        created_at TEXT NOT NULL,
+        clicks INTEGER DEFAULT 0,
+        last_updated TEXT DEFAULT (datetime('now'))
+      )
+    `);
+
+    // Create indexes for link_analytics table
+    await client.execute(`
+      CREATE INDEX IF NOT EXISTS idx_link_analytics_marker ON link_analytics (marker)
+    `);
+    
+    await client.execute(`
+      CREATE INDEX IF NOT EXISTS idx_link_analytics_created_at ON link_analytics (created_at)
+    `);
+    
+    await client.execute(`
+      CREATE INDEX IF NOT EXISTS idx_link_analytics_clicks ON link_analytics (clicks)
+    `);
+
     // Insert default admin if not exists
     await client.execute(`
       INSERT OR IGNORE INTO admins (id, username, codephrase, is_active)

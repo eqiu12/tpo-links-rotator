@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import LinkRotatorForm from '@/components/LinkRotatorForm';
 import ResultsDisplay from '@/components/ResultsDisplay';
 import RecentLinksDisplay from '@/components/RecentLinksDisplay';
+import AnalyticsDashboard from '@/components/AnalyticsDashboard';
 import { ShortenedLink } from '@/lib/types';
 
 export default function Home() {
@@ -11,7 +12,7 @@ export default function Home() {
   const [distributionInfo, setDistributionInfo] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'rotator' | 'recent'>('rotator');
+  const [activeTab, setActiveTab] = useState<'rotator' | 'recent' | 'analytics'>('rotator');
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [apiKey, setApiKey] = useState('');
   const [apiKeyStatus, setApiKeyStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -238,6 +239,16 @@ export default function Home() {
           >
             Recent Links
           </button>
+          <button
+            onClick={() => setActiveTab('analytics')}
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+              activeTab === 'analytics'
+                ? 'bg-white text-gray-900 shadow-sm'
+                : 'text-gray-600 hover:text-gray-900'
+            }`}
+          >
+            Analytics
+          </button>
         </div>
       </div>
 
@@ -259,9 +270,13 @@ export default function Home() {
             />
           </div>
         </div>
-      ) : (
+      ) : activeTab === 'recent' ? (
         <div className="bg-white rounded-lg shadow-md p-6">
           <RecentLinksDisplay />
+        </div>
+      ) : (
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <AnalyticsDashboard />
         </div>
       )}
     </div>
