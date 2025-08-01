@@ -2,7 +2,6 @@ services:
   - type: web
     name: travelpayouts-rotator
     env: node
-    rootDirectory: Projects/tpo-links-rotator
     buildCommand: npm install && npm run build
     startCommand: npm start
     envVars:
