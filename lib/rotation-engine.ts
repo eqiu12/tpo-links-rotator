@@ -255,11 +255,8 @@ export async function generateRotatedLinks(config: LinkRotationConfig): Promise<
       const marker = distribution[i];
       const affiliateLink = createAffiliateLink(config.originalLink, marker, config.subid);
       
-      // Create a title for the shortlink
-      const title = `Aviasales - ${marker}${config.subid ? ` (${config.subid})` : ''}`;
-      
-      // Shorten the link
-      const shortUrlResponse = await shortenUrl(affiliateLink, title);
+      // Shorten the link (no title - let Yourls extract the page title automatically)
+      const shortUrlResponse = await shortenUrl(affiliateLink);
       
       if (shortUrlResponse.status === 'success' && shortUrlResponse.shorturl) {
         shortenedLinks.push({
