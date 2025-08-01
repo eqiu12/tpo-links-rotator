@@ -12,12 +12,10 @@ export default function LoginPage() {
   // Ensure component is mounted on client side
   useEffect(() => {
     setMounted(true);
-    console.log('Login page mounted');
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted with:', { username, codephrase });
     setLoading(true);
     setError('');
 
@@ -31,10 +29,8 @@ export default function LoginPage() {
       });
 
       const data = await response.json();
-      console.log('Login response:', data);
 
       if (response.ok && data.success) {
-        console.log('Login successful, redirecting...');
         // Force a full page reload to ensure cookies are set and middleware picks them up
         window.location.href = '/';
       } else {
@@ -48,11 +44,7 @@ export default function LoginPage() {
     }
   };
 
-  const handleDebugClick = () => {
-    console.log('Debug button clicked');
-    setUsername('admin');
-    setCodephrase('travelpayouts2024');
-  };
+
 
   // Show loading state while component is mounting
   if (!mounted) {
@@ -149,31 +141,7 @@ export default function LoginPage() {
             </div>
           </form>
 
-          {/* Debug button for testing */}
-          <div className="mt-4">
-            <button
-              type="button"
-              onClick={handleDebugClick}
-              className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
-            >
-              Debug: Fill Form
-            </button>
-          </div>
 
-          <div className="mt-6">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300" />
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">Demo Accounts</span>
-              </div>
-            </div>
-            <div className="mt-4 text-xs text-gray-500 space-y-1">
-              <p><strong>Admin:</strong> username: admin, codephrase: travelpayouts2024</p>
-              <p><strong>Manager:</strong> username: manager, codephrase: manager2024</p>
-            </div>
-          </div>
         </div>
       </div>
     </div>
