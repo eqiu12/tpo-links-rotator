@@ -34,4 +34,4 @@ yarn-error.log*
 next-env.d.ts
 
 # Session storage
-.sessions.json 
+.sessions.json .env.local
